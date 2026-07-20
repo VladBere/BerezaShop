@@ -45,6 +45,9 @@ static void RunApplication()
             case 5:
                 ClearAll(items, ref tipAmount);
                 break;
+            case 6:
+                SaveToFile(items);
+                break;
             case 0:
                 Console.WriteLine("Good-bye and thanks for using this program.");
                 isRunning = false;
@@ -160,6 +163,38 @@ static void ClearAll(List<MenuItem> items, ref decimal tipAmount)
     items.Clear();
     tipAmount = 0m;
     Console.WriteLine("All items have been cleared.");
+}
+
+static void SaveToFile(List<MenuItem> items)
+{
+    string fileName = GetStringInput("Enter the file path to save items to: ", 1, 30);
+    try
+    {
+        using (StreamWriter writer = new StreamWriter(fileName))
+        {
+            foreach (var item in items)
+            {
+                writer.WriteLine($"{item.Description},{item.Price.ToString(CultureInfo.InvariantCulture)}");
+            }
+        }
+        Console.WriteLine($"Write to file {fileName} was successful.");
+    }
+    catch (UnauthorizedAccessException)
+    {
+        Console.WriteLine("Помилка: Відсутній доступ до запису файлу.");
+    }
+    catch (DirectoryNotFoundException)
+    {
+        Console.WriteLine("Помилка: Неправильний шлях до директорії.");
+    }
+    catch (IOException ex)
+    {
+        Console.WriteLine($"Помилка вводу/виводу: {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Невідома помилка при збереженні: {ex.Message}");
+    }
 }
 
 static void DisplayMainMenu()
