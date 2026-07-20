@@ -42,6 +42,9 @@ static void RunApplication()
             case 4:
                 DisplayBill(items, tipAmount);
                 break;
+            case 5:
+                ClearAll(items, ref tipAmount);
+                break;
             case 0:
                 Console.WriteLine("Good-bye and thanks for using this program.");
                 isRunning = false;
@@ -150,6 +153,13 @@ static void DisplayBill(List<MenuItem> items, decimal tipAmount)
     Console.WriteLine($"{"Tip Amount",20} ${tipAmount,7:F2}");
     Console.WriteLine($"{"GST Amount",20} ${gstAmount,7:F2}");
     Console.WriteLine($"{"Total Amount",20} ${totalAmount,7:F2}");
+}
+
+static void ClearAll(List<MenuItem> items, ref decimal tipAmount)
+{
+    items.Clear();
+    tipAmount = 0m;
+    Console.WriteLine("All items have been cleared.");
 }
 
 static void DisplayMainMenu()
