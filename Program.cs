@@ -48,6 +48,9 @@ static void RunApplication()
             case 6:
                 SaveToFile(items);
                 break;
+            case 7:
+                LoadFromFile(items, ref tipAmount);
+                break;
             case 0:
                 Console.WriteLine("Good-bye and thanks for using this program.");
                 isRunning = false;
@@ -194,6 +197,52 @@ static void SaveToFile(List<MenuItem> items)
     catch (Exception ex)
     {
         Console.WriteLine($"Невідома помилка при збереженні: {ex.Message}");
+    }
+}
+
+static void LoadFromFile(List<MenuItem> items, ref decimal tipAmount)
+{
+    string fileName = GetStringInput("Enter the file path to load items from: ", 1, 30);
+    if (!File.Exists(fileName))
+    {
+        Console.WriteLine($"File {fileName} does not exist.");
+        return;
+    }
+
+    try
+    {
+        var loadedItems = new List<MenuItem>();
+        string[] lines = File.ReadAllLines(fileName);
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(',');
+            if (parts.Length == 2)
+            {
+                if (decimal.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price))
+                {
+                    loadedItems.Add(new MenuItem { Description = parts[0], Price = price });
+                }
+            }
+        }
+
+        if (loadedItems.Count > 5) loadedItems = loadedItems.Take(5).ToList();
+
+        items.Clear();
+        items.AddRange(loadedItems);
+        tipAmount = 0m;
+        Console.WriteLine($"Read from {fileName} was successful.");
+    }
+    catch (UnauthorizedAccessException)
+    {
+        Console.WriteLine("Помилка: Відсутній доступ до читання файлу.");
+    }
+    catch (IOException ex)
+    {
+        Console.WriteLine($"Помилка читання файлу (можливо він відкритий в іншій програмі): {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Невідома помилка при завантаженні: {ex.Message}");
     }
 }
 
