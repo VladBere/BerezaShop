@@ -30,9 +30,6 @@ static void RunApplication()
 
         switch (choice)
         {
-            case 1:
-                AddItem(items);
-                break;
             case 0:
                 Console.WriteLine("Good-bye and thanks for using this program.");
                 isRunning = false;
@@ -46,7 +43,6 @@ static void RunApplication()
     }
 }
 }
-
 static void DisplayMainMenu()
 {
     Console.WriteLine(" __________________________ ");
@@ -63,21 +59,6 @@ static void DisplayMainMenu()
     Console.WriteLine("| | 0. Exit              | |");
     Console.WriteLine("| |______________________| |");
     Console.WriteLine("|__________________________|");
-}
-
-static void AddItem(List<MenuItem> items)
-{
-    if (items.Count >= 5)
-    {
-        Console.WriteLine("Maximum number of items (5) reached.");
-        return;
-    }
-
-    string description = GetStringInput("Enter description: ", 3, 20);
-    decimal price = GetDecimalInput("Enter price: ", 0.01m);
-
-    items.Add(new MenuItem { Description = description, Price = price });
-    Console.WriteLine("Add item was successful.");
 }
 
 static string GetStringInput(string prompt, int minLength, int maxLength)
