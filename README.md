@@ -1,4 +1,4 @@
-# Bereza Shop
+# Bereza Shop!!!
 
 > Console application for managing a shop bill — KhAI summer practice, group **611п**.
 
