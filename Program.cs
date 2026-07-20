@@ -33,6 +33,9 @@ static void RunApplication()
             case 1:
                 AddItem(items);
                 break;
+            case 2:
+                RemoveItem(items, ref tipAmount);
+                break;
             case 0:
                 Console.WriteLine("Good-bye and thanks for using this program.");
                 isRunning = false;
@@ -62,6 +65,29 @@ static void AddItem(List<MenuItem> items)
     Console.WriteLine("Add item was successful.");
 }
 
+static void RemoveItem(List<MenuItem> items, ref decimal tipAmount)
+{
+    if (items.Count == 0)
+    {
+        Console.WriteLine("There are no items to remove.");
+        return;
+    }
+
+    Console.WriteLine($"{"ItemNo",-6} {"Description",-20} {"Price",8}");
+    Console.WriteLine($"{"------",-6} {"--------------------",-20} {"--------",8}");
+    for (int i = 0; i < items.Count; i++)
+    {
+        Console.WriteLine($"{i + 1,6} {items[i].Description,-20} ${items[i].Price,7:F2}");
+    }
+
+    int itemNo = GetIntInput("Enter the item number to remove or 0 to cancel: ", 0, items.Count);
+    if (itemNo > 0)
+    {
+        items.RemoveAt(itemNo - 1);
+        Console.WriteLine("Remove item was successful.");
+        if (items.Count == 0) tipAmount = 0m;
+    }
+}
 
 static void DisplayMainMenu()
 {
