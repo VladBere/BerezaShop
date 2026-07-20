@@ -36,6 +36,9 @@ static void RunApplication()
             case 2:
                 RemoveItem(items, ref tipAmount);
                 break;
+            case 3:
+                AddTip(items, ref tipAmount);
+                break;
             case 4:
                 DisplayBill(items, tipAmount);
                 break;
@@ -90,6 +93,36 @@ static void RemoveItem(List<MenuItem> items, ref decimal tipAmount)
         items.RemoveAt(itemNo - 1);
         Console.WriteLine("Remove item was successful.");
         if (items.Count == 0) tipAmount = 0m;
+    }
+}
+
+static void AddTip(List<MenuItem> items, ref decimal tipAmount)
+{
+    if (items.Count == 0)
+    {
+        Console.WriteLine("There are no items in the bill to add tip for.");
+        return;
+    }
+
+    decimal netTotal = items.Sum(i => i.Price);
+    Console.WriteLine($"Net Total: ${netTotal:F2}");
+    Console.WriteLine("1 - Tip Percentage");
+    Console.WriteLine("2 - Tip Amount");
+    Console.WriteLine("3 - No Tip");
+
+    int method = GetIntInput("Enter Tip Method: ", 1, 3);
+    if (method == 1)
+    {
+        decimal percentage = GetDecimalInput("Enter tip percentage: ", 0m);
+        tipAmount = netTotal * (percentage / 100m);
+    }
+    else if (method == 2)
+    {
+        tipAmount = GetDecimalInput("Enter Tip amount: ", 0m);
+    }
+    else
+    {
+        tipAmount = 0m;
     }
 }
 
