@@ -36,10 +36,14 @@ static void RunApplication()
             case 2:
                 RemoveItem(items, ref tipAmount);
                 break;
+            case 4:
+                DisplayBill(items, tipAmount);
+                break;
             case 0:
                 Console.WriteLine("Good-bye and thanks for using this program.");
                 isRunning = false;
                 break;
+            
         }
         if (isRunning) Console.WriteLine();
     }
@@ -87,6 +91,32 @@ static void RemoveItem(List<MenuItem> items, ref decimal tipAmount)
         Console.WriteLine("Remove item was successful.");
         if (items.Count == 0) tipAmount = 0m;
     }
+}
+
+static void DisplayBill(List<MenuItem> items, decimal tipAmount)
+{
+    if (items.Count == 0)
+    {
+        Console.WriteLine("There are no items in the bill to display.");
+        return;
+    }
+
+    Console.WriteLine($"{"Description",-20} {"Price",8}");
+    Console.WriteLine($"{"--------------------",-20} {"--------",8}");
+    foreach (var item in items)
+    {
+        Console.WriteLine($"{item.Description,-20} ${item.Price,7:F2}");
+    }
+    Console.WriteLine($"{"--------------------",-20} {"--------",8}");
+
+    decimal netTotal = items.Sum(i => i.Price);
+    decimal gstAmount = netTotal * 0.05m;
+    decimal totalAmount = netTotal + tipAmount + gstAmount;
+
+    Console.WriteLine($"{"Net Total",20} ${netTotal,7:F2}");
+    Console.WriteLine($"{"Tip Amount",20} ${tipAmount,7:F2}");
+    Console.WriteLine($"{"GST Amount",20} ${gstAmount,7:F2}");
+    Console.WriteLine($"{"Total Amount",20} ${totalAmount,7:F2}");
 }
 
 static void DisplayMainMenu()
